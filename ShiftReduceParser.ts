@@ -52,6 +52,10 @@ export class ShiftReduceParser {
         public input: Token[]
     ) {}
 
+    findProduction() {
+        return findProduction(this.productions,this.stack);
+    }
+
     reduce(production: Production) {
         const beforeLength = this.stack.length - production.produces.length;
         const before = this.stack.slice(0,beforeLength);
@@ -65,9 +69,12 @@ export class ShiftReduceParser {
     }
     
     step() {
-        const production = findProduction(this.productions, this.stack);
-
+        const production = this.findProduction();
         if (production) this.reduce(production);
         else this.shift();
+    }
+
+    parse() {
+        while (this.findProduction() || this.input.length>0) this.step();
     }
 }
