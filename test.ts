@@ -1,5 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.88.0/testing/asserts.ts";
-import {ShiftReduceParser, parseProductions} from './ShiftReduceParser.ts';
+import {ShiftReduceParser} from './ShiftReduceParser.ts';
+import {parseProductions} from './input_parsing.ts';
 
 Deno.test("shift reduce parser shifts", ()=>{
     const parser = new ShiftReduceParser([],['a','b']);

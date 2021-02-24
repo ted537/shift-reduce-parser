@@ -1,15 +1,9 @@
+import {arrayEquals} from './array.ts';
+
 type Token = string;
-interface Production {
+export interface Production {
     consumes: Token;
     produces: Token[];
-}
-
-function arrayEquals<T>(a:T[], b:T[]) {
-    if (a.length !== b.length) return false;
-    for (let i=0;i<a.length;++i) {
-        if (a[i]!=b[i]) return false;
-    }
-    return true;
 }
 
 function stackEndsWith(stack: Token[], production: Production): boolean {
@@ -24,24 +18,6 @@ function findProduction(
     return productions.find(
         production=>stackEndsWith(stack,production)
     )
-}
-
-function hasProduction(line:string): boolean {
-    return line.includes('=>');
-}
-
-function parseProduction(line:string): Production {
-    const [before,after] = line.split('=>',2);
-    const consumes = before.trim();
-    const produces = after.split(' ').filter(Boolean);
-    return {consumes, produces};
-}
-
-export function parseProductions(paragraph:string): Production[] {
-    const lines =  paragraph.split('\n');
-    const linesWithProdutions = lines.filter(hasProduction);
-    const productions = linesWithProdutions.map(parseProduction);
-    return productions;
 }
 
 export class ShiftReduceParser {
