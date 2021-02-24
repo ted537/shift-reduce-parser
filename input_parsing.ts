@@ -1,4 +1,4 @@
-import {Production} from './ShiftReduceParser.ts';
+import {Token, Production} from './ShiftReduceParser.ts';
 
 function hasProduction(line:string): boolean {
     return line.includes('=>');
@@ -16,4 +16,8 @@ export function parseProductions(paragraph:string): Production[] {
     const linesWithProdutions = lines.filter(hasProduction);
     const productions = linesWithProdutions.map(parseProduction);
     return productions;
+}
+
+export function parseInputs(text:string): Token[] {
+    return text.split(' ').filter(Boolean);
 }

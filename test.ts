@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.88.0/testing/asserts.ts";
 import {ShiftReduceParser} from './ShiftReduceParser.ts';
-import {parseProductions} from './input_parsing.ts';
+import {parseProductions, parseInputs} from './input_parsing.ts';
 
 Deno.test("shift reduce parser shifts", ()=>{
     const parser = new ShiftReduceParser([],['a','b']);
@@ -29,6 +29,11 @@ Deno.test("parses productions from lines",()=>{
         {consumes:'A',produces:['a','b']},
         {consumes:'B',produces:['b','a']}
     ]);
+});
+
+Deno.test("parsed token from line",()=>{
+    const parsed = parseInputs('a b  b a');
+    assertEquals(parsed, ['a','b','b','a']);
 });
 
 Deno.test("shift reduce parser parses",()=>{

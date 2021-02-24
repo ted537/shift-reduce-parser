@@ -1,6 +1,6 @@
 import {arrayEquals} from './array.ts';
 
-type Token = string;
+export type Token = string;
 export interface Production {
     consumes: Token;
     produces: Token[];
