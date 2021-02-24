@@ -52,6 +52,8 @@ function Parser({parser}) {
 const MarginButton = props =>
     <Box m={2}><Button variant="contained" {...props} /></Box>
 
+const applyEv = callback => ev => callback(ev.target.value);
+
 function App() {
     const [productions, setProductions] = useState(DEFAULT_PRODUCTIONS);
     const [input, setInput] = useState(DEFAULT_INPUT);
@@ -76,11 +78,11 @@ function App() {
         <Typography variant='h4'>Productions</Typography>
         <TextField fullWidth multiline variant="outlined"
             value={productions} 
-            onChange={ev=>setProductions(ev.target.value)}
+            onChange={applyEv(setProductions)}
         />
         <Typography variant='h4'>Inputs</Typography>
         <TextField fullWidth variant="outlined" value={input}
-            onChange={ev=>setInput(ev.target.value)} 
+            onChange={applyEv(setInput)}
         />
         <Box display="flex" justifyContent="center" m={1}>
             <MarginButton onClick={createParser}>Create</MarginButton>
