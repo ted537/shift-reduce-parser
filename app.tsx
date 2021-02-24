@@ -2,26 +2,60 @@ import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import {
     Container, Button, Box, Typography, 
-    ThemeProvider, createMuiTheme, TextareaAutosize, Input, TextField
+    Grid, TextField,
+    TableBody, TableRow, Table,
+    withStyles
 } from '@material-ui/core';
+import MuiTableCell from "@material-ui/core/TableCell";
+
+const TableCell = withStyles({
+  root: {
+    border: '1px solid black'
+  }
+})(MuiTableCell);
+
+
+import { ShiftReduceParser, Token } from './ShiftReduceParser';
+import { parseProductions, parseInputs } from './input_parsing';
 
 const DEFAULT_PRODUCTIONS = [
     'S=>(A)', 'A=>a b', 'A=>b a'
 ].join('\n');
 const DEFAULT_INPUT = '( a b b a )';
 
+function Stack({stack}) {
+    const rows = stack.map(
+        (value,index)=>
+            <TableRow key={index}>
+                <TableCell>{value}</TableCell>
+            </TableRow>
+    )
+
+    return <Table><TableBody>{rows}</TableBody></Table>
+}
+
 function Parser({parser}) {
     if (!parser) return null;
-    return <div className="columns">
-        <div>Column1</div>
-        <div>Column2</div>
-    </div>
+    return <Grid container justify='space-between'>
+        <Grid item>
+            <Stack stack={parser.stack} />
+        </Grid>
+        <Grid item>
+            <Stack stack={parser.input} />
+        </Grid>
+    </Grid>
 }
 
 function App() {
     const [productions, setProductions] = useState(DEFAULT_PRODUCTIONS);
     const [input, setInput] = useState(DEFAULT_INPUT);
     const [parser, setParser] = useState(null);
+
+    const createParser = ()=> {
+        const parsedProductions = parseProductions(productions);
+        const parsedInputs = parseInputs(input);
+        setParser(new ShiftReduceParser(parsedProductions, parsedInputs));
+    }
 
     return<Container>
         <Typography variant='h4'>Productions</Typography>
@@ -34,9 +68,9 @@ function App() {
             onChange={ev=>setInput(ev.target.value)} 
         />
         <Box display="flex" justifyContent="center" m={1}>
-            <Button variant="contained">Create</Button>
+            <Button onClick={createParser} variant="contained">Create</Button>
         </Box>
-        <h1>Parser</h1>
+        <Typography variant='h4'>Parser</Typography>
         <Parser parser={parser} />
     </Container>
 }
