@@ -17,13 +17,15 @@ function stackEndsWith(stack: Token[], production: Production): Boolean {
     return arrayEquals(top,production.produces);
 }
 
-function findProduction(productions: Production[], stack: Token[]): Production {
+function findProduction(
+    productions: Production[], stack: Token[]
+    ): Production | undefined {
     return productions.find(
         production=>stackEndsWith(stack,production)
     )
 }
 
-class ShiftReduceParser {
+export class ShiftReduceParser {
     stack: Token[] = [];
     
     constructor(
@@ -37,7 +39,7 @@ class ShiftReduceParser {
 
     shift() {
         if (this.input.length>0) {
-            this.stack.push(this.input.shift());
+            this.stack.push(this.input.shift() as string);
         }
     }
     
