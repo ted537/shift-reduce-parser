@@ -53,4 +53,8 @@ export class ShiftReduceParser {
     parse() {
         while (this.findProduction() || this.input.length>0) this.step();
     }
+
+    state() {
+        return {stack:this.stack, input: this.input}
+    }
 }

@@ -4,7 +4,8 @@ import {
     Container, Button, Box, Typography, 
     Grid, TextField,
     TableBody, TableRow, Table,
-    withStyles
+    withStyles,
+    Step
 } from '@material-ui/core';
 import MuiTableCell from "@material-ui/core/TableCell";
 
@@ -15,11 +16,11 @@ const TableCell = withStyles({
 })(MuiTableCell);
 
 
-import { ShiftReduceParser, Token } from './ShiftReduceParser';
+import { ShiftReduceParser } from './ShiftReduceParser';
 import { parseProductions, parseInputs } from './input_parsing';
 
 const DEFAULT_PRODUCTIONS = [
-    'S=>(A)', 'A=>a b', 'A=>b a'
+    'S=>( A A )', 'A=>a b', 'A=>b a'
 ].join('\n');
 const DEFAULT_INPUT = '( a b b a )';
 
@@ -46,15 +47,27 @@ function Parser({parser}) {
     </Grid>
 }
 
+const MarginButton = props =>
+    <Box m={2}><Button variant="contained" {...props} /></Box>
+
 function App() {
     const [productions, setProductions] = useState(DEFAULT_PRODUCTIONS);
     const [input, setInput] = useState(DEFAULT_INPUT);
     const [parser, setParser] = useState(null);
 
+    const [parserState, setParserState] = useState(null);
+
     const createParser = ()=> {
         const parsedProductions = parseProductions(productions);
         const parsedInputs = parseInputs(input);
-        setParser(new ShiftReduceParser(parsedProductions, parsedInputs));
+        const parser = new ShiftReduceParser(parsedProductions, parsedInputs);
+        setParser(parser);
+        setParserState(parser.state());
+    }
+
+    const step = () => {
+        parser.step();
+        setParserState(parser.state());
     }
 
     return<Container>
@@ -68,10 +81,10 @@ function App() {
             onChange={ev=>setInput(ev.target.value)} 
         />
         <Box display="flex" justifyContent="center" m={1}>
-            <Button onClick={createParser} variant="contained">Create</Button>
+            <MarginButton onClick={createParser}>Create</MarginButton>
+            <MarginButton onClick={step}>Step</MarginButton>
         </Box>
-        <Typography variant='h4'>Parser</Typography>
-        <Parser parser={parser} />
+        <Parser parser={parserState} />
     </Container>
 }
 
