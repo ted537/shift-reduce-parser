@@ -7,3 +7,12 @@ Deno.test("parser shifts", ()=>{
     parser.step();
     assertEquals(parser.stack,['a']);
 })
+
+Deno.test("parser reduces", ()=>{
+    const parser = new ShiftReduceParser([{consumes:'A',produces:['a']}],['a']);
+    assertEquals(parser.stack,[]);
+    parser.step();
+    assertEquals(parser.stack,['a']);
+    parser.step();
+    assertEquals(parser.stack,['A']);
+})

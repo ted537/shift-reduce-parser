@@ -7,19 +7,20 @@ interface Production {
 function arrayEquals<T>(a:T[], b:T[]) {
     if (a.length !== b.length) return false;
     for (let i=0;i<a.length;++i) {
-        if (a!=b) return false;
+        if (a[i]!=b[i]) return false;
     }
     return true;
 }
 
-function stackEndsWith(stack: Token[], production: Production): Boolean {
+function stackEndsWith(stack: Token[], production: Production): boolean {
     const top = stack.slice(stack.length-production.produces.length);
     return arrayEquals(top,production.produces);
 }
 
 function findProduction(
     productions: Production[], stack: Token[]
-    ): Production | undefined {
+): Production | undefined {
+    
     return productions.find(
         production=>stackEndsWith(stack,production)
     )
@@ -34,7 +35,9 @@ export class ShiftReduceParser {
     ) {}
 
     reduce(production: Production) {
-
+        const beforeLength = this.stack.length - production.produces.length;
+        const before = this.stack.slice(0,beforeLength);
+        this.stack = before.concat(production.consumes);
     }
 
     shift() {
