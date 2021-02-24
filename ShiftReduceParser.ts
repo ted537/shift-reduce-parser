@@ -26,6 +26,17 @@ function findProduction(
     )
 }
 
+export function parseProduction(line:string): Production {
+    const [before,after] = line.split('=>',2);
+    const consumes = before.trim();
+    const produces = after.split(' ').filter(Boolean);
+    return {consumes, produces};
+}
+
+export function parseProductions(paragraph:string): Production[] {
+    return paragraph.split('\n').map(parseProduction);
+}
+
 export class ShiftReduceParser {
     stack: Token[] = [];
     
