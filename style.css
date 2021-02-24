@@ -1,0 +1,24 @@
+.container {
+    max-width: 1000px;
+    margin:1em auto;
+}
+
+.columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:100%;
+}
+
+.wide {
+    width:100%;
+}
+
+textarea {
+    padding: 0.5em;
+    line-height: 1.5;
+}
+
+input {
+    padding: 0.5em;
+}
