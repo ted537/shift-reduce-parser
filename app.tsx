@@ -39,9 +39,11 @@ function Parser({parser}) {
     if (!parser) return null;
     return <Grid container justify='space-between'>
         <Grid item>
+            <Typography variant="h4">Stack</Typography>
             <Stack stack={parser.stack} />
         </Grid>
         <Grid item>
+            <Typography variant="h4">Inputs</Typography>
             <Stack stack={parser.input} />
         </Grid>
     </Grid>
@@ -73,7 +75,7 @@ function App() {
     return<Container>
         <Typography variant='h4'>Productions</Typography>
         <TextField fullWidth multiline variant="outlined"
-            rows={5} value={productions} 
+            value={productions} 
             onChange={ev=>setProductions(ev.target.value)}
         />
         <Typography variant='h4'>Inputs</Typography>
